@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zyroo • Portfolio</title>
+  <link rel="stylesheet" href="style.css" />
+  <meta name="theme-color" content="#0f172a" />
+</head>
+<body>
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="container inner">
+      <a class="brand" href="index.html">
+        <span class="logo">⚡</span><span>Zyroo</span>
+      </a>
+      <div class="menu-toggle" aria-label="Toggle menu">☰</div>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a class="active" href="portfolio.html">Portfolio</a></li>
+        <li><a href="profile.html">Profil</a></li>
+        <li><a href="contact.html">Kontak</a></li>
+        <li><a href="login.html">Login</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="container section">
+    <h1 class="mb-3">Portfolio Saya</h1>
+
+    <!-- Form Tambah Project -->
+    <div class="card mb-3">
+      <h3 class="mb-2">Tambah Project Baru</h3>
+      <form id="createProjectForm" class="form" enctype="multipart/form-data">
+        <div class="input">
+          <label for="title">Judul Project</label>
+          <input type="text" id="title" name="title" required />
+        </div>
+        <div class="input">
+          <label for="category">Kategori</label>
+          <select id="category" name="category" required>
+            <option value="">-- Pilih --</option>
+            <option value="Web">Web</option>
+            <option value="Mobile">Mobile</option>
+            <option value="IoT">IoT</option>
+            <option value="Design">Design</option>
+          </select>
+        </div>
+        <div class="input">
+          <label for="description">Deskripsi</label>
+          <textarea id="description" name="description" rows="3"></textarea>
+        </div>
+        <div class="input">
+          <label for="link_demo">Link Demo</label>
+          <input type="url" id="link_demo" name="link_demo" placeholder="https://..." />
+        </div>
+        <div class="input">
+          <label for="image">Gambar</label>
+          <input type="file" id="image" name="image" accept="image/*" />
+        </div>
+        <button class="btn" type="submit">Tambah Project</button>
+      </form>
+    </div>
+
+    <!-- Daftar Project -->
+    <div id="portfolioList" class="grid grid-3"></div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container center">
+      © 2025 Zyroo. All rights reserved.
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    // Load & render portfolio
+    async function loadMyPortfolio(){
+      const userRes = await apiFetch('/api/user/me');
+      if (!userRes.ok) {
+        alert("Silakan login untuk melihat portfolio Anda");
+        location.href = 'login.html';
+        return;
+      }
+      const userId = userRes.data.user.id;
+      const { ok, data } = await apiFetch('/api/portfolio?user_id=' + userId);
+      if (!ok) { alert(data.message); return; }
+
+      const container = document.getElementById('portfolioList');
+      container.innerHTML = '';
+      if (data.items.length === 0) {
+        container.innerHTML = '<p>Belum ada project.</p>';
+        return;
+      }
+
+      data.items.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+          <h3>${escapeHtml(item.title)}</h3>
+          <p><em>${escapeHtml(item.category)}</em></p>
+          ${item.image_url ? `<img src="${item.image_url}" alt="" style="max-width:100%;height:auto;border-radius:8px;"/>` : ''}
+          <p>${escapeHtml(item.description || '')}</p>
+          ${item.link_demo ? `<p><a href="${escapeHtml(item.link_demo)}" target="_blank">Demo</a></p>` : ''}
+          <div>
+            <button data-id="${item.id}" class="btn ghost delete">Hapus</button>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+
+      // tombol hapus
+      container.querySelectorAll('.delete').forEach(btn => {
+        btn.addEventListener('click', async ()=>{
+          if (!confirm('Hapus project ini?')) return;
+          const res = await apiFetch('/api/portfolio/' + btn.dataset.id, { method: 'DELETE' });
+          alert(res.data.message);
+          if (res.ok) loadMyPortfolio();
+        });
+      });
+    }
+
+    // Tambah project baru
+    async function submitNewProject(e){
+      e.preventDefault();
+      const form = e.target;
+      const fd = new FormData(form);
+      const res = await fetch('/api/portfolio', {
+        method: 'POST',
+        body: fd,
+        credentials: 'include'
+      });
+      const data = await res.json();
+      alert(data.message || 'Gagal');
+      if (res.ok) {
+        form.reset();
+        loadMyPortfolio();
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('createProjectForm').addEventListener('submit', submitNewProject);
+      loadMyPortfolio();
+    });
+
+    // helper escape html
+    function escapeHtml(s='') {
+      return String(s).replace(/[&<>"']/g, m => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m]));
+    }
+  </script>
+</body>
+</html>

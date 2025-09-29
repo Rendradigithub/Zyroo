@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zyroo • Kontak</title>
+  <link rel="stylesheet" href="style.css" />
+  <meta name="theme-color" content="#0f172a" />
+</head>
+<body>
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="container inner">
+      <a class="brand" href="index.html">
+        <span class="logo">⚡</span><span>Zyroo</span>
+      </a>
+      <div class="menu-toggle" aria-label="Toggle menu">☰</div>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="portfolio.html">Portfolio</a></li>
+        <li><a href="profile.html">Profil</a></li>
+        <li><a class="active" href="contact.html">Kontak</a></li>
+        <li><a href="login.html">Login</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="container section">
+    <h1 class="mb-3">Kontak</h1>
+    <form class="form" onsubmit="event.preventDefault(); alert('Pesan terkirim! (mockup)')">
+      <div class="input">
+        <label for="nama">Nama</label>
+        <input id="nama" name="nama" placeholder="Nama lengkap" />
+        <small>Nama wajib diisi</small>
+      </div>
+      <div class="input">
+        <label for="email">Email</label>
+        <input id="email" type="email" placeholder="email@domain.com" />
+        <small>Email tidak valid</small>
+      </div>
+      <div class="input">
+        <label for="pesan">Pesan</label>
+        <textarea id="pesan" rows="4" placeholder="Tulis pesan..."></textarea>
+      </div>
+      <button class="btn" type="submit">Kirim</button>
+    </form>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container center">
+      © 2025 Zyroo. All rights reserved.
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zyroo • Login</title>
+  <link rel="stylesheet" href="style.css" />
+  <meta name="theme-color" content="#0f172a" />
+</head>
+<body>
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="container inner">
+      <a class="brand" href="index.html">
+        <span class="logo">⚡</span><span>Zyroo</span>
+      </a>
+      <div class="menu-toggle" aria-label="Toggle menu">☰</div>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="portfolio.html">Portfolio</a></li>
+        <li><a href="profile.html">Profil</a></li>
+        <li><a href="contact.html">Kontak</a></li>
+        <li><a class="active" href="login.html">Login</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="container hero">
+    <div class="center mb-3">
+      <span class="badge">Akses</span>
+      <h1 class="m-0 mt-2">Masuk ke Akun</h1>
+      <p class="m-0 mt-2">
+        Halaman login ini otomatis mencoba backend <code>/api/login</code> dan fallback ke
+        <em>mockup</em> jika backend tidak aktif.
+        Tambahkan <code>?mode=mock</code> di URL untuk paksa mode mockup.
+      </p>
+    </div>
+
+    <form id="loginForm" class="form" novalidate>
+      <div class="input">
+        <label for="username">Username</label>
+        <input id="username" name="username" autocomplete="username" placeholder="admin" />
+        <small id="error-username">Username wajib diisi</small>
+      </div>
+      <div class="input">
+        <label for="password">Password</label>
+        <input id="password" type="password" name="password" autocomplete="current-password" placeholder="1234" />
+        <small id="error-password">Password wajib diisi</small>
+      </div>
+      <button class="btn" type="submit">Masuk</button>
+      <button class="btn ghost" type="button" onclick="location.search='?mode=mock'">
+        Coba Mode Mockup
+      </button>
+
+      <!-- ✅ Link tambahan -->
+      <p class="mt-3 center" style="color: var(--muted);">
+        Belum memiliki akun?
+        <a href="register.html" style="color: var(--primary); font-weight: 600;">
+          Daftar sekarang
+        </a>
+      </p>
+    </form>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container center">
+      © 2025 Zyroo. All rights reserved.
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zyroo • Register</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="navbar">
+    <div class="container inner">
+      <a class="brand" href="index.html"><span class="logo">⚡</span><span>Zyroo</span></a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="portfolio.html">Portfolio</a></li>
+        <li><a href="profile.html">Profil</a></li>
+        <li><a href="contact.html">Kontak</a></li>
+        <li><a href="login.html">Login</a></li>
+        <li><a class="active" href="register.html">Register</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main class="container hero">
+    <h1>Buat Akun Baru</h1>
+    <form id="registerForm" class="form">
+      <div class="input">
+        <label for="username">Username</label>
+        <input id="username" name="username" />
+      </div>
+      <div class="input">
+        <label for="password">Password</label>
+        <input id="password" type="password" name="password" />
+      </div>
+      <button class="btn" type="submit">Daftar</button>
+    </form>
+  </main>
+
+  <script>
+    document.getElementById('registerForm').addEventListener('submit', async e => {
+      e.preventDefault();
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value.trim();
+
+      const res = await fetch('/api/register', {
+        method: 'POST',
+        headers: { 'Content-Type':'application/json' },
+        body: JSON.stringify({ username, password })
+      });
+      const data = await res.json();
+      alert(data.message);
+      if (data.success) window.location.href = 'login.html';
+    });
+  </script>
+</body>
+</html>
