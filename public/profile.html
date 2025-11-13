@@ -26,21 +26,34 @@
   </header>
 
   <!-- Main Content -->
-  <main class="container section">
+  <main class="container section" id="profileArea">
     <h1 class="mb-3">Profil</h1>
-    <div class="grid grid-2">
-      <div class="card">
-        <h3 class="mb-2">Tentang Saya</h3>
-        <p>Saya adalah pengembang front-end yang fokus pada UI/UX clean, performa tinggi, dan aksesibilitas.</p>
-      </div>
-      <div class="card">
-        <h3 class="mb-2">Keahlian</h3>
-        <ul class="m-0">
-          <li>HTML5, CSS3 (Responsive, Grid/Flex)</li>
-          <li>JavaScript (ES6+)</li>
-          <li>Integrasi API sederhana (Fetch)</li>
-        </ul>
-      </div>
+
+    <!-- Data User -->
+    <div class="card mb-3">
+      <h3 class="mb-2">Info Akun</h3>
+      <p><strong>Username:</strong> <span id="p_username">-</span></p>
+      <p><strong>Bergabung:</strong> <span id="p_created">-</span></p>
+    </div>
+
+    <!-- Form Edit -->
+    <div class="card">
+      <h3 class="mb-2">Ubah Profil</h3>
+      <form id="profileForm" class="form">
+        <div class="input">
+          <label for="p_display_name">Nama Tampilan</label>
+          <input type="text" id="p_display_name" name="display_name" placeholder="Nama tampilan Anda" />
+        </div>
+        <div class="input">
+          <label for="p_bio">Bio</label>
+          <textarea id="p_bio" name="bio" rows="3" placeholder="Ceritakan tentang Anda..."></textarea>
+        </div>
+        <div class="input">
+          <label for="p_password">Password Baru</label>
+          <input type="password" id="p_password" name="password" placeholder="Kosongkan jika tidak ingin ganti" />
+        </div>
+        <button class="btn" type="submit">Simpan Perubahan</button>
+      </form>
     </div>
   </main>
 
@@ -52,5 +65,49 @@
   </footer>
 
   <script src="script.js"></script>
+  <script>
+    // Panggil API untuk load profil
+    async function loadProfile(){
+      const { ok, data } = await apiFetch('/api/user/me');
+      if (!ok) {
+        if (data && data.message === 'Unauthorized') {
+          alert("Silakan login dulu");
+          location.href = 'login.html';
+        }
+        return;
+      }
+      const user = data.user;
+      document.getElementById('p_username').textContent = user.username;
+      document.getElementById('p_created').textContent = new Date(user.created_at).toLocaleDateString('id-ID');
+      document.getElementById('p_display_name').value = user.display_name || '';
+      document.getElementById('p_bio').value = user.bio || '';
+    }
+
+    // Kirim update profil
+    async function submitProfileUpdate(e){
+      e.preventDefault();
+      const display_name = document.getElementById('p_display_name').value.trim();
+      const bio = document.getElementById('p_bio').value.trim();
+      const password = document.getElementById('p_password').value.trim();
+
+      const { ok, data } = await apiFetch('/api/user/me', {
+        method: 'PUT',
+        body: JSON.stringify({ display_name, bio, password: password || undefined })
+      });
+
+      alert(data.message);
+      if (ok) {
+        document.getElementById('p_password').value = '';
+        loadProfile();
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      if (document.getElementById('profileArea')) {
+        loadProfile();
+        document.getElementById('profileForm').addEventListener('submit', submitProfileUpdate);
+      }
+    });
+  </script>
 </body>
 </html>
