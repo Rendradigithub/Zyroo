@@ -5,8 +5,12 @@ import { store } from './store';
 import Layout from './components/layout/Layout';
 import Home from './pages/Home/Home';
 import Jobs from './pages/Jobs/Jobs';
+import Forum from './pages/Forum/Forum';
+import Profile from './pages/Profile/Profile';
+import Admin from './pages/Admin/Admin';
 import Login from './pages/Auth/Login';
 import Register from './pages/Auth/Register';
+import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 import './App.css';
 
 function App() {
@@ -15,18 +19,32 @@ function App() {
       <Router>
         <Layout>
           <Routes>
+            {/* Public Routes */}
             <Route path="/" element={<Home />} />
             <Route path="/jobs" element={<Jobs />} />
-            <Route
-              path="/forum"
-              element={<div>Forum Page - Coming Soon</div>}
-            />
-            <Route
-              path="/profile"
-              element={<div>Profile Page - Coming Soon</div>}
-            />
+            <Route path="/forum" element={<Forum />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+
+            {/* Protected Routes */}
+            <Route
+              path="/profile"
+              element={
+                <ProtectedRoute>
+                  <Profile />
+                </ProtectedRoute>
+              }
+            />
+
+            {/* Admin Only Routes */}
+            <Route
+              path="/admin"
+              element={
+                <ProtectedRoute adminOnly={true}>
+                  <Admin />
+                </ProtectedRoute>
+              }
+            />
           </Routes>
         </Layout>
       </Router>

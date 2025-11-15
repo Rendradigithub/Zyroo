@@ -1,0 +1,133 @@
+.forum-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.forum-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.forum-header h1 {
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.forum-header p {
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.btn-new-post {
+  background: #007bff;
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.new-post-form {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px;
+}
+
+.new-post-form input,
+.new-post-form textarea {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-family: inherit;
+}
+
+.form-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.form-actions button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.posts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.post-card {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.post-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 15px;
+}
+
+.post-header h3 {
+  margin: 0;
+  color: #333;
+  flex: 1;
+}
+
+.post-date {
+  color: #999;
+  font-size: 14px;
+}
+
+.post-content p {
+  margin: 0 0 15px 0;
+  color: #555;
+  line-height: 1.6;
+}
+
+.post-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  font-size: 14px;
+  color: #666;
+}
+
+.post-stats {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.like-btn {
+  background: none;
+  border: 1px solid #ddd;
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.btn-read {
+  background: #f8f9fa;
+  color: #007bff;
+  padding: 8px 16px;
+  border: 1px solid #007bff;
+  border-radius: 4px;
+  cursor: pointer;
+}
