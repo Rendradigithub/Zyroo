@@ -1,5 +1,13 @@
 const express = require('express');
 const cors = require('cors');
+const dotenv = require('dotenv');
+const connectDB = require('./config/database'); // UNCOMMENT INI
+
+// Load env vars
+dotenv.config();
+
+// Connect to database - UNCOMMENT INI
+connectDB();
 
 const app = express();
 
@@ -7,36 +15,42 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Basic route
+// Routes
+app.use('/api/auth', require('./routes/auth'));
+
+// Health check route
 app.get('/api/health', (req, res) => {
-  res.json({ 
-    status: 'OK', 
-    message: 'Zyroo API is running!',
-    timestamp: new Date().toISOString()
+  res.json({
+    success: true,
+    message: 'ZYROO API is healthy and running!',
+    timestamp: new Date().toISOString(),
   });
 });
 
-// Jobs route
-app.get('/api/jobs', (req, res) => {
-  const jobs = [
-    {
-      id: 1,
-      title: 'Frontend Developer',
-      company: 'Tech Startup',
-      location: 'Jakarta',
-      type: 'Full-time',
-      posted: '2024-01-15'
-    },
-    {
-      id: 2, 
-      title: 'Backend Developer',
-      company: 'FinTech Company', 
-      location: 'Bandung',
-      type: 'Full-time',
-      posted: '2024-01-14'
-    }
-  ];
-  res.json(jobs);
+// Basic route
+app.get('/', (req, res) => {
+  res.json({
+    success: true,
+    message: '🚀 ZYROO API is running...',
+    version: '1.0.0',
+  });
+});
+
+// Handle undefined routes
+app.use('*', (req, res) => {
+  res.status(404).json({
+    success: false,
+    message: 'Route not found',
+  });
+});
+
+// Error handling middleware
+app.use((error, req, res, next) => {
+  console.error('Error:', error);
+  res.status(500).json({
+    success: false,
+    message: 'Internal server error',
+  });
 });
 
 module.exports = app;
