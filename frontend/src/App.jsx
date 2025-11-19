@@ -11,6 +11,7 @@ import Admin from './pages/Admin/Admin';
 import Login from './pages/Auth/Login';
 import Register from './pages/Auth/Register';
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
+import PostDetail from './pages/Forum/PostDetail'; // TAMBAH IMPORT INI
 import './App.css';
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/jobs" element={<Jobs />} />
             <Route path="/forum" element={<Forum />} />
+            <Route path="/forum/post/:postId" element={<PostDetail />} /> {/* TAMBAH ROUTE INI */}
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
 
