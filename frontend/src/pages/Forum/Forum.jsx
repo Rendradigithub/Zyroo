@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom'; // IMPORT INI
 import './Forum.css';
 
 const Forum = () => {
   const [posts, setPosts] = useState([]);
   const [newPost, setNewPost] = useState({ title: '', content: '' });
   const [showNewPostForm, setShowNewPostForm] = useState(false);
+  const navigate = useNavigate(); // TAMBAH INI
 
   // Data dummy untuk demo
   useEffect(() => {
@@ -67,6 +69,11 @@ const Forum = () => {
         post.id === postId ? { ...post, likes: post.likes + 1 } : post
       )
     );
+  };
+
+  // TAMBAH FUNGSI INI untuk navigasi ke detail post
+  const handleReadMore = (postId) => {
+    navigate(`/forum/post/${postId}`);
   };
 
   return (
@@ -137,7 +144,13 @@ const Forum = () => {
               </div>
             </div>
             <div className="post-actions">
-              <button className="btn-read">Baca Selengkapnya</button>
+              {/* UPDATE BUTTON INI dengan onClick handler baru */}
+              <button 
+                className="btn-read"
+                onClick={() => handleReadMore(post.id)}
+              >
+                Baca Selengkapnya
+              </button>
             </div>
           </div>
         ))}
