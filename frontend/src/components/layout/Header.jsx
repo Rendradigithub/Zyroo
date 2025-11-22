@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { logout } from '../../store/slices/authSlice'; // Sesuaikan dengan path store Anda
+import { logout } from '../../store/slices/authSlice';
 import './Header.css';
 
 const Header = () => {
@@ -10,6 +10,16 @@ const Header = () => {
   const dispatch = useDispatch();
   const { isAuthenticated, user } = useSelector((state) => state.auth);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  // Efek header saat scroll (lebih profesional)
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 10);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const handleLogout = () => {
     dispatch(logout());
@@ -34,12 +44,17 @@ const Header = () => {
     }
   }
 
+  const userInitial = (user?.name || 'U').charAt(0).toUpperCase();
+
   return (
-    <header className="header">
+    <header className={`header ${isScrolled ? 'scrolled' : ''}`}>
+      <div className="header-gradient-bar" />
+
       <div className="header-container">
         {/* Logo */}
         <Link to="/" className="logo" onClick={closeMobileMenu}>
-          ZYROO
+          <span className="logo-mark">Z</span>
+          <span className="logo-text">YROO<span className="logo-dot"></span></span>
         </Link>
 
         {/* Desktop Navigation */}
@@ -61,7 +76,13 @@ const Header = () => {
         <div className="auth-section">
           {isAuthenticated ? (
             <div className="user-menu">
-              <span className="user-greeting">Hi, {user?.name || 'User'}!</span>
+              <div className="user-pill">
+                <div className="user-avatar">{userInitial}</div>
+                <div className="user-info-text">
+                  <span className="user-label">Masuk sebagai</span>
+                  <span className="user-name">{user?.name || 'User'}</span>
+                </div>
+              </div>
               <button className="btn-logout" onClick={handleLogout}>
                 Logout
               </button>
@@ -80,7 +101,7 @@ const Header = () => {
 
         {/* Mobile Menu Button */}
         <button
-          className="mobile-menu-btn"
+          className={`mobile-menu-btn ${isMobileMenuOpen ? 'open' : ''}`}
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         >
           <span></span>
@@ -107,7 +128,13 @@ const Header = () => {
 
           {isAuthenticated ? (
             <div className="mobile-auth">
-              <span className="user-info">Hi, {user?.name || 'User'}!</span>
+              <div className="mobile-user-pill">
+                <div className="mobile-user-avatar">{userInitial}</div>
+                <div className="mobile-user-text">
+                  <span className="mobile-user-label">Masuk sebagai</span>
+                  <span className="mobile-user-name">{user?.name || 'User'}</span>
+                </div>
+              </div>
               <button className="btn-logout-mobile" onClick={handleLogout}>
                 Logout
               </button>
